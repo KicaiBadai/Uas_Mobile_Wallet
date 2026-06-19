@@ -52,27 +52,27 @@ class _TopUpPageState extends State<TopUpPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(left: 4, bottom: 10),
+                      padding: EdgeInsets.only(left: 4, bottom: 12),
                       child: Text('Nominal top up',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.slate500,
                           )),
                     ),
                     GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 2.5,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      childAspectRatio: 2.4,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
                       children: _chips.map((c) {
                         final selected = _amount == c;
                         return GestureDetector(
@@ -83,15 +83,24 @@ class _TopUpPageState extends State<TopUpPage> {
                               color: selected ? AppColors.primarySurface : Colors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: selected ? AppColors.primaryLight : AppColors.line,
-                                width: 1.8,
+                                color: selected ? AppColors.primary : AppColors.line,
+                                width: selected ? 2.0 : 1.2,
                               ),
+                              boxShadow: selected
+                                  ? [
+                                      BoxShadow(
+                                        color: AppColors.primary.withOpacity(0.04),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      )
+                                    ]
+                                  : AppColors.shadowSoft,
                             ),
                             child: Center(
                               child: Text(CurrencyFormatter.format(c),
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
-                                    fontSize: 16,
+                                    fontSize: 15.5,
                                     fontWeight: FontWeight.w800,
                                     color: selected ? AppColors.primary : AppColors.ink,
                                   )),
@@ -100,21 +109,22 @@ class _TopUpPageState extends State<TopUpPage> {
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                     const Padding(
-                      padding: EdgeInsets.only(left: 4, bottom: 10),
+                      padding: EdgeInsets.only(left: 4, bottom: 12),
                       child: Text('Metode pembayaran',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.slate500,
                           )),
                     ),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(22),
+                        border: Border.all(color: AppColors.line2, width: 1.2),
                         boxShadow: AppColors.shadowSoft,
                       ),
                       child: Column(
@@ -124,28 +134,28 @@ class _TopUpPageState extends State<TopUpPage> {
                           final selected = _method == m['id'];
                           return Column(
                             children: [
-                              if (i > 0) const Divider(height: 1, indent: 16, color: AppColors.line2),
+                              if (i > 0) const Divider(height: 1, indent: 72, color: AppColors.line2),
                               GestureDetector(
                                 onTap: () => setState(() => _method = m['id'] as String),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                                   child: Row(
                                     children: [
                                       FeatureIcon(icon: m['icon'] as IconData, tone: m['tone'] as String, size: 42, iconSize: 20),
-                                      const SizedBox(width: 13),
+                                      const SizedBox(width: 14),
                                       Expanded(
                                         child: Text(m['name'] as String,
                                             style: const TextStyle(
                                               fontFamily: 'PlusJakartaSans',
-                                              fontSize: 14.5,
-                                              fontWeight: FontWeight.w700,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.w800,
                                               color: AppColors.ink,
                                             )),
                                       ),
                                       AnimatedContainer(
                                         duration: const Duration(milliseconds: 150),
-                                        width: 20,
-                                        height: 20,
+                                        width: 22,
+                                        height: 22,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: selected ? AppColors.primary : Colors.white,
@@ -157,8 +167,8 @@ class _TopUpPageState extends State<TopUpPage> {
                                         child: selected
                                             ? Center(
                                                 child: Container(
-                                                  width: 8,
-                                                  height: 8,
+                                                  width: 9,
+                                                  height: 9,
                                                   decoration: const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: Colors.white,
@@ -181,8 +191,11 @@ class _TopUpPageState extends State<TopUpPage> {
               ),
             ),
             Container(
-              color: AppColors.bg,
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: AppColors.line2, width: 1.2)),
+              ),
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 12 + MediaQuery.of(context).padding.bottom),
               child: BlocBuilder<PaymentBloc, PaymentState>(
                 builder: (context, state) => AppButton(
                   label: 'Top Up ${CurrencyFormatter.format(_amount)}',
