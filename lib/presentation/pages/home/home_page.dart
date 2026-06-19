@@ -33,8 +33,9 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
         final user = authState is AuthAuthenticated ? authState.user : null;
-        final firstName = user?.firstName ?? 'Kamu';
-        final fullName = user?.name ?? 'User';
+        final nameStr = user?.firstName.trim();
+        final firstName = (nameStr == null || nameStr.isEmpty) ? 'Kamu' : nameStr;
+        final fullName = (user?.name.trim() == null || user!.name.trim().isEmpty) ? 'User' : user.name;
 
         return Scaffold(
           backgroundColor: AppColors.bg,

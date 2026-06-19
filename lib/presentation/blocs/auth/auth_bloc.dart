@@ -102,6 +102,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     setApiToken(token);
     emit(AuthAuthenticated(user));
+
+    try {
+      final freshUser = await _getMe();
+      emit(AuthAuthenticated(freshUser));
+    } catch (_) {
+      // Fail silently, fallback cached user is already shown
+    }
   }
 
   Future<void> _onLoginWithFirebase(AuthLoginWithFirebase event, Emitter<AuthState> emit) async {

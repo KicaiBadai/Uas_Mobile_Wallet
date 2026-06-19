@@ -60,7 +60,18 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<UserEntity> getMe() async {
     try {
-      return await _remote.getMe();
+      final user = await _remote.getMe();
+      await _local.saveUserJson(UserModel(
+        id: user.id,
+        firebaseUid: user.firebaseUid,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        emailVerified: user.emailVerified,
+        totpEnabled: user.totpEnabled,
+        twoFaMethod: user.twoFaMethod,
+      ).toJsonString());
+      return user;
     } on ServerException catch (e) {
       throw ServerFailure(e.message);
     } on NetworkException catch (e) {
