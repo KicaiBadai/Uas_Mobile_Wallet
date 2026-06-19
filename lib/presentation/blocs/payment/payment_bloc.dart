@@ -102,6 +102,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       emit(PaymentError(e.message));
     } on NetworkFailure catch (e) {
       emit(PaymentError(e.message));
+    } catch (e) {
+      emit(PaymentError('Terjadi kesalahan tidak terduga: $e'));
     }
   }
 
@@ -123,6 +125,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       emit(PaymentError(e.message));
     } on NetworkFailure catch (e) {
       emit(PaymentError(e.message));
+    } catch (e) {
+      emit(PaymentError('Terjadi kesalahan tidak terduga: $e'));
     }
   }
 }
