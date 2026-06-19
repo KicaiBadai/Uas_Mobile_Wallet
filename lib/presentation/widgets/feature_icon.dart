@@ -18,12 +18,29 @@ class FeatureIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.tone(tone);
+    final bgGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        colors[0],
+        Color.lerp(colors[0], colors[1], 0.08) ?? colors[0],
+      ],
+    );
+
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: colors[0],
-        borderRadius: BorderRadius.circular(size * 0.29),
+        gradient: bgGradient,
+        borderRadius: BorderRadius.circular(size * 0.28),
+        boxShadow: [
+          BoxShadow(
+            color: colors[1].withOpacity(0.06),
+            blurRadius: 10,
+            spreadRadius: 1,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Center(
         child: Icon(icon, color: colors[1], size: iconSize),
