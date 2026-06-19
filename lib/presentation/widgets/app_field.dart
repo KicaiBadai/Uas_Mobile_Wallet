@@ -80,25 +80,28 @@ class _AppFieldState extends State<AppField> {
         ],
         AnimatedContainer(
           duration: const Duration(milliseconds: 150),
-          height: 54,
+          height: 56,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: _focused ? AppColors.primary : AppColors.line,
-              width: 1.0,
+              width: _focused ? 1.8 : 1.2,
             ),
             boxShadow: _focused
                 ? [
                     BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.1), blurRadius: 0, spreadRadius: 4)
+                      color: AppColors.primary.withOpacity(0.06),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    )
                   ]
                 : [],
           ),
           child: Row(
             children: [
               if (widget.prefixIcon != null) ...[
-                const SizedBox(width: 14),
+                const SizedBox(width: 16),
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
                     _focused ? AppColors.primary : AppColors.slate400,
@@ -106,9 +109,9 @@ class _AppFieldState extends State<AppField> {
                   ),
                   child: widget.prefixIcon!,
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
               ] else
-                const SizedBox(width: 14),
+                const SizedBox(width: 16),
               Expanded(
                 child: Focus(
                   onFocusChange: (f) => setState(() => _focused = f),
@@ -124,16 +127,16 @@ class _AppFieldState extends State<AppField> {
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15.5,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.ink,
                     ),
                     decoration: InputDecoration(
                       hintText: widget.placeholder,
                       hintStyle: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.slate300,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.slate400,
                       ),
                       border: InputBorder.none,
                       isDense: true,
@@ -145,7 +148,7 @@ class _AppFieldState extends State<AppField> {
               ),
               if (widget.suffixIcon != null) ...[
                 widget.suffixIcon!,
-                const SizedBox(width: 4),
+                const SizedBox(width: 6),
               ],
             ],
           ),
