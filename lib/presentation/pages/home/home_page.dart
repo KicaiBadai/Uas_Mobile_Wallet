@@ -432,14 +432,10 @@ class _HomePageState extends State<HomePage> {
       onTap: () => context.go('/merchant'),
       child: Container(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0E1726), Color(0xFF21314D)],
-          ),
-          borderRadius: BorderRadius.circular(20),
+          gradient: AppColors.darkGradient,
+          borderRadius: BorderRadius.circular(22),
         ),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -451,7 +447,7 @@ class _HomePageState extends State<HomePage> {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF5B9BFF).withValues(alpha: 0.18),
+                  color: const Color(0xFF5B9BFF).withOpacity(0.15),
                 ),
               ),
             ),
@@ -461,29 +457,29 @@ class _HomePageState extends State<HomePage> {
                   width: 46,
                   height: 46,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.12),
+                    color: Colors.white.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Icon(Icons.link_rounded, size: 24, color: Color(0xFF5B9BFF)),
+                  child: const Icon(Icons.link_rounded, size: 22, color: Color(0xFF5B9BFF)),
                 ),
-                const SizedBox(width: 13),
-                const Expanded(
+                const SizedBox(width: 14),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Coba bayar dari toko online',
+                      const Text('Coba bayar dari toko online',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 14.5,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w800,
                             color: Colors.white,
                           )),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 3),
                       Text('Simulasi checkout e-commerce → bayar via DKG',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 12.5,
-                            color: Colors.white70,
+                            color: Colors.white.withOpacity(0.7),
                           )),
                     ],
                   ),
