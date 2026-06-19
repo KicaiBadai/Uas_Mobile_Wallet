@@ -109,148 +109,187 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final email = FirebaseAuth.instance.currentUser?.email ?? 'email kamu';
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
-                onPressed: () => context.go('/register'),
+      backgroundColor: AppColors.bg,
+      body: Stack(
+        children: [
+          // Background blobs
+          Positioned(
+            top: -60,
+            left: -60,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primary.withOpacity(0.04),
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(28, 14, 28, 28),
-                child: Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+          ),
+          Positioned(
+            bottom: 40,
+            right: -60,
+            child: Container(
+              width: 220,
+              height: 220,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.violet.withOpacity(0.04),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                    onPressed: () => context.go('/register'),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(28, 20, 28, 28),
+                    child: Column(
                       children: [
-                        Container(
-                          width: 78,
-                          height: 78,
-                          decoration: BoxDecoration(
-                            color: AppColors.primarySurface,
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: const Center(
-                            child: Icon(DkgIcons.mail, size: 36, color: AppColors.primary),
-                          ),
-                        ),
-                        Positioned(
-                          top: -4,
-                          right: -4,
-                          child: Container(
-                            width: 26,
-                            height: 26,
-                            decoration: BoxDecoration(
-                              color: AppColors.green,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 3),
+                        const SizedBox(height: 20),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 84,
+                              height: 84,
+                              decoration: BoxDecoration(
+                                gradient: AppColors.primaryGradient,
+                                borderRadius: BorderRadius.circular(28),
+                                boxShadow: AppColors.shadowPrimary,
+                              ),
+                              child: const Center(
+                                child: Icon(DkgIcons.mail, size: 34, color: Colors.white),
+                              ),
                             ),
-                            child: const Icon(DkgIcons.check, size: 13, color: Colors.white),
+                            Positioned(
+                              top: -2,
+                              right: -2,
+                              child: Container(
+                                width: 26,
+                                height: 26,
+                                decoration: BoxDecoration(
+                                  color: AppColors.green,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.white, width: 2.5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.green.withOpacity(0.2),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(DkgIcons.check, size: 13, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 28),
+                        const Text(
+                          'Verifikasi Email',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.ink,
+                            letterSpacing: -0.4,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Verifikasi email',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 23,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.ink,
-                        letterSpacing: -0.3,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text.rich(
-                      TextSpan(
-                        text: 'Kami kirim kode 6 digit ke\n',
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 14.5,
-                          color: AppColors.slate500,
-                          height: 1.55,
-                        ),
-                        children: [
+                        const SizedBox(height: 8),
+                        Text.rich(
                           TextSpan(
-                            text: email,
+                            text: 'Kami telah mengirim kode 6 digit ke\n',
                             style: const TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14.5,
+                              color: AppColors.slate500,
+                              height: 1.55,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: email,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.ink,
+                                ),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 36),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 100),
+                          transform: _hasError
+                              ? (Matrix4.identity()..translateByDouble(10.0, 0, 0, 1.0))
+                              : Matrix4.identity(),
+                          child: CodeInput(
+                            value: _code,
+                            onChanged: _loading ? (_) {} : _onCodeChanged,
+                            hasError: _hasError,
+                          ),
+                        ),
+                        if (_loading) ...[
+                          const SizedBox(height: 20),
+                          const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.2,
+                              valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                            ),
+                          ),
+                        ] else if (_hasError && _errorMessage != null) ...[
+                          const SizedBox(height: 14),
+                          Text(
+                            _errorMessage!,
+                            style: const TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              color: AppColors.red,
+                              fontSize: 13,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.ink,
                             ),
                           ),
                         ],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 30),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 100),
-                      transform: _hasError
-                          ? (Matrix4.identity()..translateByDouble(10.0, 0, 0, 1.0))
-                          : Matrix4.identity(),
-                      child: CodeInput(
-                        value: _code,
-                        onChanged: _loading ? (_) {} : _onCodeChanged,
-                        hasError: _hasError,
-                      ),
-                    ),
-                    if (_loading) ...[
-                      const SizedBox(height: 16),
-                      const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          valueColor: AlwaysStoppedAnimation(AppColors.primary),
-                        ),
-                      ),
-                    ] else if (_hasError && _errorMessage != null) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        _errorMessage!,
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          color: AppColors.red,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 40),
-                    _timer > 0
-                        ? Text(
-                            'Kirim ulang kode dalam 00:${_timer.toString().padLeft(2, '0')}',
-                            style: const TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 13.5,
-                              color: AppColors.slate400,
-                            ),
-                          )
-                        : TextButton.icon(
-                            onPressed: _resend,
-                            icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.primary),
-                            label: const Text(
-                              'Kirim ulang kode',
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
+                        const SizedBox(height: 48),
+                        _timer > 0
+                            ? Text(
+                                'Kirim ulang kode dalam 00:${_timer.toString().padLeft(2, '0')}',
+                                style: const TextStyle(
+                                  fontFamily: 'PlusJakartaSans',
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.slate500,
+                                ),
+                              )
+                            : TextButton.icon(
+                                onPressed: _resend,
+                                icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.primary),
+                                label: const Text(
+                                  'Kirim ulang kode',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 14,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
