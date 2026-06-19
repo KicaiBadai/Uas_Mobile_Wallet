@@ -188,10 +188,11 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.line2, width: 1.2),
         boxShadow: AppColors.shadowCard,
       ),
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
       child: Column(
         children: [
           Row(
@@ -199,12 +200,12 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   const AppLogo(size: 26),
-                  const SizedBox(width: 7),
+                  const SizedBox(width: 8),
                   const Text('Saldo DKG',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 13,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.slate500,
                       )),
                 ],
@@ -213,21 +214,21 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 onTap: () => context.go('/topup'),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                   decoration: BoxDecoration(
                     color: AppColors.primarySurface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.add_rounded, size: 15, color: AppColors.primary),
-                      SizedBox(width: 5),
+                      Icon(Icons.add_rounded, size: 14, color: AppColors.primary),
+                      SizedBox(width: 4),
                       Text('Isi Saldo',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 12.5,
                           )),
                     ],
                   ),
@@ -235,17 +236,17 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Row(
             children: [
               Text(
                 _hideBalance ? CurrencyFormatter.maskBalance() : CurrencyFormatter.format(balance),
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 30,
+                  fontSize: 32,
                   fontWeight: FontWeight.w800,
                   color: AppColors.ink,
-                  letterSpacing: -0.5,
+                  letterSpacing: -0.6,
                 ),
               ),
               const SizedBox(width: 10),
@@ -259,9 +260,9 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 16),
+            margin: const EdgeInsets.only(top: 18),
             decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.line2)),
+              border: Border(top: BorderSide(color: AppColors.line2, width: 1.2)),
             ),
             child: Row(
               children: actions.map((a) {
@@ -269,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                   child: GestureDetector(
                     onTap: () => context.go(a['route'] as String),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Column(
                         children: [
                           FeatureIcon(
@@ -278,12 +279,12 @@ class _HomePageState extends State<HomePage> {
                             size: 46,
                             iconSize: 22,
                           ),
-                          const SizedBox(height: 7),
+                          const SizedBox(height: 8),
                           Text(a['label'] as String,
                               style: const TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 12,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w800,
                                 color: AppColors.slate600,
                               )),
                         ],
