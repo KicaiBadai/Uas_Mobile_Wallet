@@ -19,13 +19,13 @@ class TransactionRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (divider)
-          const Divider(height: 1, thickness: 1, color: AppColors.line2, indent: 16),
+          const Divider(height: 1, thickness: 1, color: AppColors.line2, indent: 72),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           child: Row(
             children: [
-              FeatureIcon(icon: icon, tone: tone, size: 44, iconSize: 21),
-              const SizedBox(width: 13),
+              FeatureIcon(icon: icon, tone: tone, size: 44, iconSize: 20),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,29 +36,30 @@ class TransactionRow extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontSize: 14.5,
+                        fontSize: 15.0,
                         fontWeight: FontWeight.w700,
                         color: AppColors.ink,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 3),
                     Text(
                       _formatDate(txn.createdAt),
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 12.5,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.slate400,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Text(
                 '${isCredit ? '+' : '-'}${CurrencyFormatter.format(txn.amount)}',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 14.5,
+                  fontSize: 15.0,
                   fontWeight: FontWeight.w800,
                   color: isCredit ? AppColors.green : AppColors.ink,
                 ),
