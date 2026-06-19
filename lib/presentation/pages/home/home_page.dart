@@ -392,15 +392,16 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.line2, width: 1.2),
         boxShadow: AppColors.shadowSoft,
       ),
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
       child: GridView.count(
         crossAxisCount: 4,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: 18,
+        mainAxisSpacing: 22,
         crossAxisSpacing: 0,
         children: features.map((f) {
           return GestureDetector(
@@ -414,8 +415,8 @@ class _HomePageState extends State<HomePage> {
                 Text(f['label'] as String,
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
-                      fontSize: 11.8,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w800,
                       color: AppColors.slate600,
                     )),
               ],
