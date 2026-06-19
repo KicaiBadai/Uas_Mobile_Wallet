@@ -4,9 +4,9 @@ import '../../../domain/entities/user_entity.dart';
 import '../../../domain/usecases/auth/verify_firebase_token_usecase.dart';
 import '../../../domain/usecases/auth/get_me_usecase.dart';
 import '../../../domain/usecases/auth/logout_usecase.dart';
-import '../../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../core/error/failures.dart';
+import '../../../injection/injection_container.dart';
 
 // Events
 abstract class AuthEvent extends Equatable {
@@ -100,6 +100,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthUnauthenticated());
       return;
     }
+    setApiToken(token);
     emit(AuthAuthenticated(user));
   }
 
