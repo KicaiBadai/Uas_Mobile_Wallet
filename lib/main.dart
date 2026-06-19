@@ -9,6 +9,8 @@ import 'core/utils/app_bloc_observer.dart';
 import 'firebase_options.dart';
 import 'injection/injection_container.dart' as di;
 
+late final DeeplinkService _deeplinkService;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -26,10 +28,6 @@ void main() async {
   // Initialize dependency injection
   await di.init();
 
-  // Initialize DeeplinkService
-  final deeplinkService = DeeplinkService(AppRouter.router);
-  await deeplinkService.init();
-
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -42,6 +40,11 @@ void main() async {
     statusBarIconBrightness: Brightness.dark,
   ));
 
+  // Simpan instance agar tidak di-GC — stream subscription harus tetap hidup
+  // untuk menerima in-app deeplinks via onNewIntent (Android singleTop).
+  _deeplinkService = DeeplinkService(AppRouter.router);
+  await _deeplinkService.init();
+  
   runApp(const DompetKampusApp());
 }
 
