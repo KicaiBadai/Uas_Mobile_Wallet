@@ -26,20 +26,31 @@ class AccountPage extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                // Header
+                // Premium Header
                 Container(
                   decoration: const BoxDecoration(
                     gradient: AppColors.primaryGradient,
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(28),
-                      bottomRight: Radius.circular(28),
+                      bottomLeft: Radius.circular(32),
+                      bottomRight: Radius.circular(32),
                     ),
                   ),
                   padding: EdgeInsets.fromLTRB(
-                      20, MediaQuery.of(context).padding.top + 12, 20, 24),
+                      20, MediaQuery.of(context).padding.top + 16, 20, 32),
                   child: Row(
                     children: [
-                      AppAvatar(name: user?.name ?? 'User', size: 60, bg: Colors.white.withValues(alpha: 0.25)),
+                      Container(
+                        padding: const EdgeInsets.all(2.5),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white24,
+                        ),
+                        child: AppAvatar(
+                          name: user?.name ?? 'User',
+                          size: 60,
+                          bg: Colors.white.withOpacity(0.25),
+                        ),
+                      ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -48,10 +59,11 @@ class AccountPage extends StatelessWidget {
                             Text(user?.name ?? 'Pengguna',
                                 style: const TextStyle(
                                   fontFamily: 'PlusJakartaSans',
-                                  fontSize: 19,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w800,
                                   color: Colors.white,
                                 )),
+                            const SizedBox(height: 2),
                             Text(user?.email ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -63,20 +75,21 @@ class AccountPage extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.18),
+                          color: Colors.white.withOpacity(0.18),
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.white24, width: 1.2),
                         ),
                         child: const Row(
                           children: [
                             Icon(Icons.verified_user_outlined, size: 14, color: Colors.white),
                             SizedBox(width: 5),
-                            Text('Terverifikasi',
+                            Text('Verified',
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
-                                  fontSize: 11.5,
-                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
                                   color: Colors.white,
                                 )),
                           ],
@@ -86,26 +99,28 @@ class AccountPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.only(left: 4, bottom: 8),
+                        padding: EdgeInsets.only(left: 4, bottom: 10),
                         child: Text('Keamanan',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: AppColors.slate400,
+                              letterSpacing: 0.5,
                             )),
                       ),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: AppColors.line2, width: 1.5),
                           boxShadow: AppColors.shadowSoft,
                         ),
                         child: Column(
@@ -118,7 +133,7 @@ class AccountPage extends StatelessWidget {
                               onTap: () => context.go('/setup-2fa'),
                               right: const AppBadge(label: 'Aktif', tone: 'green'),
                             ),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
+                            const Divider(height: 1, indent: 72, color: AppColors.line2),
                             _Row(
                               icon: Icons.lock_outline_rounded,
                               tone: 'blue',
@@ -126,7 +141,7 @@ class AccountPage extends StatelessWidget {
                               subtitle: 'Terakhir diubah 2 bln lalu',
                               onTap: () {},
                             ),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
+                            const Divider(height: 1, indent: 72, color: AppColors.line2),
                             _Row(
                               icon: Icons.fingerprint_rounded,
                               tone: 'violet',
@@ -138,67 +153,70 @@ class AccountPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 20),
                       const Padding(
-                        padding: EdgeInsets.only(left: 4, bottom: 8),
+                        padding: EdgeInsets.only(left: 4, bottom: 10),
                         child: Text('Akun',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: AppColors.slate400,
+                              letterSpacing: 0.5,
                             )),
                       ),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: AppColors.line2, width: 1.5),
                           boxShadow: AppColors.shadowSoft,
                         ),
                         child: Column(
                           children: [
                             _Row(icon: Icons.person_outline_rounded, tone: 'blue', title: 'Data pribadi', onTap: () {}),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
+                            const Divider(height: 1, indent: 72, color: AppColors.line2),
                             _Row(icon: Icons.account_balance_outlined, tone: 'green', title: 'Rekening & kartu tersimpan', onTap: () {}),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
+                            const Divider(height: 1, indent: 72, color: AppColors.line2),
                             _Row(icon: Icons.settings_outlined, tone: 'slate', title: 'Pengaturan aplikasi', onTap: () {}),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 24),
                       GestureDetector(
                         onTap: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
                         child: Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: AppColors.shadowSoft,
+                            color: AppColors.redSurface,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: AppColors.red.withOpacity(0.2), width: 1.5),
                           ),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.logout_rounded, size: 20, color: AppColors.red),
                               SizedBox(width: 9),
-                              Text('Keluar',
+                              Text('Keluar dari Aplikasi',
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     color: AppColors.red,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w800,
                                     fontSize: 15,
                                   )),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       const Center(
                         child: Text('Dompet Kampus Global · v1.0.0',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 12,
                               color: AppColors.slate400,
+                              fontWeight: FontWeight.w500,
                             )),
                       ),
                       const SizedBox(height: 24),
