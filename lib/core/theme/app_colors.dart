@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Primary - Vibrant Royal Blue & Deep Indigo
-  static const Color primary = Color(0xFF2563EB);
-  static const Color primaryLight = Color(0xFF60A5FA);
-  static const Color primaryDark = Color(0xFF1E3A8A);
-  static const Color primarySurface = Color(0xFFEFF6FF);
-  static const Color primaryBorder = Color(0xFFBFDBFE);
+  // Primary - Vibrant Sunset Orange (Merchandise)
+  static const Color primary = Color(0xFFFF6A2B);
+  static const Color primaryLight = Color(0xFFFF9E7A);
+  static const Color primaryDark = Color(0xFFD3490E);
+  static const Color primarySurface = Color(0xFFFFF1E9);
+  static const Color primaryBorder = Color(0xFFFFD5C4);
 
   // Semantic
   static const Color green = Color(0xFF10B981); // Emerald Green
@@ -34,9 +34,9 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFF2563EB), // Royal Blue
-      Color(0xFF4F46E5), // Deep Indigo
-      Color(0xFF7C3AED), // Purple
+      Color(0xFFFF8E53), // Sunset Coral
+      Color(0xFFFF6A2B), // Sunset Orange
+      Color(0xFFFF3E2E), // Bright Orange-Red
     ],
   );
 
@@ -78,7 +78,7 @@ class AppColors {
 
   static List<BoxShadow> shadowPrimary = [
     BoxShadow(
-      color: Color(0x352563EB),
+      color: Color(0x35FF6A2B),
       blurRadius: 20,
       spreadRadius: -2,
       offset: Offset(0, 8),
