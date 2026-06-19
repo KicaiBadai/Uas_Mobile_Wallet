@@ -27,11 +27,13 @@ import '../../presentation/pages/transfer/transfer_amount_page.dart';
 import '../../presentation/pages/transfer/transfer_confirm_page.dart';
 import '../../presentation/pages/transfer/transfer_page.dart';
 import '../../presentation/widgets/app_tab_bar.dart';
+import '../../presentation/pages/payment/payment_deeplink_page.dart';
+
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-  static GoRouter get router => GoRouter(
+  static final GoRouter router = GoRouter(
         navigatorKey: _rootNavigatorKey,
         initialLocation: '/',
         routes: [
@@ -160,6 +162,13 @@ class AppRouter {
             },
           ),
           GoRoute(path: '/merchant', builder: (_, __) => _withPayment(const MerchantCheckoutPage())),
+
+          GoRoute(
+            path: '/payment/deeplink',
+            builder: (_, state) {
+              return PaymentDeeplinkPage(data: state.extra);
+            },
+          ),
         ],
       );
 
