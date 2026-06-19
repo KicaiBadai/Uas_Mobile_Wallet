@@ -4,7 +4,7 @@ import '../../core/theme/app_colors.dart';
 enum AppButtonVariant { primary, dark, soft, ghost, outline, outlineWhite, white, danger, success }
 enum AppButtonSize { lg, md, sm }
 
-class AppButton extends StatelessWidget {
+class AppButton extends StatefulWidget {
   final String label;
   final VoidCallback? onPressed;
   final AppButtonVariant variant;
@@ -25,61 +25,93 @@ class AppButton extends StatelessWidget {
   });
 
   @override
+  State<AppButton> createState() => _AppButtonState();
+}
+
+class _AppButtonState extends State<AppButton> {
+  double _scale = 1.0;
+
+  void _onTapDown(TapDownDetails _) {
+    if (widget.onPressed != null && !widget.isLoading) {
+      setState(() => _scale = 0.96);
+    }
+  }
+
+  void _onTapUp(TapUpDetails _) {
+    if (widget.onPressed != null && !widget.isLoading) {
+      setState(() => _scale = 1.0);
+    }
+  }
+
+  void _onTapCancel() {
+    if (widget.onPressed != null && !widget.isLoading) {
+      setState(() => _scale = 1.0);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final (height, fontSize, radius, px) = switch (size) {
+    final (height, fontSize, radius, px) = switch (widget.size) {
       AppButtonSize.lg => (54.0, 16.0, 16.0, 20.0),
       AppButtonSize.md => (46.0, 15.0, 14.0, 16.0),
-      AppButtonSize.sm => (38.0, 13.5, 11.0, 13.0),
+      AppButtonSize.sm => (38.0, 13.0, 12.0, 14.0),
     };
 
     final (bg, fg, shadow, border) = _resolveStyle();
-    final disabled = onPressed == null;
+    final disabled = widget.onPressed == null;
 
-    return Opacity(
-      opacity: disabled ? 0.5 : 1.0,
-      child: GestureDetector(
-        onTap: disabled || isLoading ? null : onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          height: height,
-          width: fullWidth ? double.infinity : null,
-          padding: EdgeInsets.symmetric(horizontal: px),
-          decoration: BoxDecoration(
-            gradient: variant == AppButtonVariant.primary ? AppColors.primaryGradient : null,
-            color: variant != AppButtonVariant.primary ? bg : null,
-            borderRadius: BorderRadius.circular(radius),
-            boxShadow: shadow,
-            border: border,
-          ),
-          child: Row(
-            mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (isLoading) ...[
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.4,
-                    valueColor: AlwaysStoppedAnimation(fg),
+    return AnimatedScale(
+      scale: _scale,
+      duration: const Duration(milliseconds: 80),
+      curve: Curves.easeOut,
+      child: Opacity(
+        opacity: disabled ? 0.5 : 1.0,
+        child: GestureDetector(
+          onTapDown: _onTapDown,
+          onTapUp: _onTapUp,
+          onTapCancel: _onTapCancel,
+          onTap: disabled || widget.isLoading ? null : widget.onPressed,
+          child: Container(
+            height: height,
+            width: widget.fullWidth ? double.infinity : null,
+            padding: EdgeInsets.symmetric(horizontal: px),
+            decoration: BoxDecoration(
+              gradient: widget.variant == AppButtonVariant.primary ? AppColors.primaryGradient : null,
+              color: widget.variant != AppButtonVariant.primary ? bg : null,
+              borderRadius: BorderRadius.circular(radius),
+              boxShadow: shadow,
+              border: border,
+            ),
+            child: Row(
+              mainAxisSize: widget.fullWidth ? MainAxisSize.max : MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.isLoading) ...[
+                  SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.2,
+                      valueColor: AlwaysStoppedAnimation(fg),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ] else if (widget.icon != null) ...[
+                  widget.icon!,
+                  const SizedBox(width: 10),
+                ],
+                Text(
+                  widget.label,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w800,
+                    color: fg,
+                    letterSpacing: 0.1,
                   ),
                 ),
-                const SizedBox(width: 9),
-              ] else if (icon != null) ...[
-                icon!,
-                const SizedBox(width: 9),
               ],
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.w700,
-                  color: fg,
-                  letterSpacing: 0.1,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -87,7 +119,7 @@ class AppButton extends StatelessWidget {
   }
 
   (Color, Color, List<BoxShadow>, Border?) _resolveStyle() {
-    return switch (variant) {
+    return switch (widget.variant) {
       AppButtonVariant.primary => (
           AppColors.primary,
           Colors.white,
@@ -107,12 +139,12 @@ class AppButton extends StatelessWidget {
           Colors.transparent,
           Colors.white,
           [],
-          Border.all(color: Colors.white.withValues(alpha: 0.7), width: 1.5),
+          Border.all(color: Colors.white.withOpacity(0.7), width: 1.5),
         ),
       AppButtonVariant.white => (
           Colors.white,
           AppColors.primary,
-          [BoxShadow(color: Colors.black.withValues(alpha: 0.14), blurRadius: 20, offset: const Offset(0, 8))],
+          [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 20, offset: const Offset(0, 8))],
           null,
         ),
       AppButtonVariant.danger => (AppColors.red, Colors.white, [], null),
