@@ -16,20 +16,31 @@ class AppTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 64 + MediaQuery.of(context).padding.bottom,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 20,
-            offset: const Offset(0, -4),
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        16,
+        4,
+        16,
+        10 + MediaQuery.of(context).padding.bottom,
       ),
-      child: SafeArea(
-        top: false,
+      child: Container(
+        height: 68,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.04),
+              blurRadius: 30,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
         child: Row(
           children: [
             _TabItem(icon: DkgIcons.home, label: 'Home', tabKey: 'home', active: active, onTap: onTab),
@@ -40,14 +51,14 @@ class AppTabBar extends StatelessWidget {
                 child: GestureDetector(
                   onTap: onScan,
                   child: Container(
-                    width: 56,
-                    height: 56,
+                    width: 52,
+                    height: 52,
                     decoration: BoxDecoration(
                       gradient: AppColors.primaryGradient,
                       shape: BoxShape.circle,
                       boxShadow: AppColors.shadowPrimary,
                     ),
-                    child: const Icon(DkgIcons.scan, color: Colors.white, size: 26),
+                    child: const Icon(DkgIcons.scan, color: Colors.white, size: 24),
                   ),
                 ),
               ),
@@ -86,19 +97,34 @@ class _TabItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 24,
-              color: isActive ? AppColors.primary : AppColors.slate400,
+            AnimatedScale(
+              scale: isActive ? 1.08 : 1.0,
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOutBack,
+              child: Icon(
+                icon,
+                size: isActive ? 24 : 22,
+                color: isActive ? AppColors.primary : AppColors.slate400,
+              ),
             ),
             const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                fontSize: 10.5,
+                fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
                 color: isActive ? AppColors.primary : AppColors.slate400,
+              ),
+            ),
+            const SizedBox(height: 2),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              width: isActive ? 4 : 0,
+              height: isActive ? 4 : 0,
+              decoration: const BoxDecoration(
+                color: AppColors.primary,
+                shape: BoxShape.circle,
               ),
             ),
           ],
