@@ -86,6 +86,14 @@ class _PinPageState extends State<PinPage> {
           Future.delayed(const Duration(milliseconds: 800), () {
             if (mounted) setState(() => _hasError = false);
           });
+        } else if (state is PaymentInsufficientBalance) {
+          setState(() { _busy = false; _pin = ''; });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Saldo tidak mencukupi. Saldo Anda: ${CurrencyFormatter.format(state.balance)}'),
+              backgroundColor: AppColors.red,
+            ),
+          );
         } else if (state is PaymentError) {
           setState(() => _busy = false);
           ScaffoldMessenger.of(context).showSnackBar(
