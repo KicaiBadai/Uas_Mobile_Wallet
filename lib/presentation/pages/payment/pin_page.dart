@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/payment/payment_bloc.dart';
 import '../../widgets/feature_icon.dart';
 import '../../widgets/pin_pad.dart';
@@ -22,44 +23,63 @@ class _PinPageState extends State<PinPage> {
   bool _hasError = false;
 
   void _onComplete(String pin) {
-    // In production, validate PIN with backend
-    // Here we simulate: any 6-digit PIN triggers the payment
     setState(() => _busy = true);
-    _processPayment();
+    _processPayment(pin);
   }
 
-  void _processPayment() {
+  void _processPayment(String pin) {
     final flow = widget.flowData;
     final kind = flow['kind'] as String? ?? '';
 
-    if (kind == 'transfer') {
-      // Use OTP from 2FA — for demo we use a hardcoded type
-      context.read<PaymentBloc>().add(PaymentTransferRequested(
-        amount: (flow['amount'] as num).toDouble(),
-        description: flow['note'] as String? ?? 'Transfer',
-        otpCode: '000000', // In production: get from actual 2FA
-        otpType: AppConstants.otpTypeTotp,
-      ));
-    } else if (kind == 'topup') {
-      context.read<PaymentBloc>().add(PaymentTopupRequested(
-        (flow['amount'] as num).toDouble(),
-      ));
-    } else if (kind == 'payment' || kind == 'deeplink') {
-      // QRIS payment → also uses transfer endpoint
-      context.read<PaymentBloc>().add(PaymentTransferRequested(
-        amount: (flow['amount'] as num).toDouble(),
-        description: flow['description'] as String? ?? 'Pembayaran QRIS',
-        otpCode: '000000',
-        otpType: AppConstants.otpTypeTotp,
-      ));
-    }
+    debugPrint('[PinPage] Simulating payment success locally for kind=$kind with PIN=$pin');
+
+    // Simulate network delay of 1.2 seconds, then redirect to success page directly
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      if (!mounted) return;
+
+      if (kind == 'transfer') {
+        context.go('/success', extra: {
+          'title': 'Transfer berhasil',
+          'subtitle': flow['note'] as String? ?? 'Transfer',
+          'amount': (flow['amount'] as num).toDouble(),
+          'lines': [
+            ['Jumlah', CurrencyFormatter.format((flow['amount'] as num).toDouble())],
+            ['Saldo setelah', CurrencyFormatter.format(1000000.0)], // mock balance
+            ['Ref', 'DKGMOCK${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}'],
+          ],
+        });
+      } else if (kind == 'topup') {
+        context.go('/success', extra: {
+          'title': 'Top up berhasil',
+          'subtitle': 'Saldo kamu bertambah',
+          'amount': (flow['amount'] as num).toDouble(),
+          'lines': [
+            ['Jumlah', CurrencyFormatter.format((flow['amount'] as num).toDouble())],
+            ['Saldo sekarang', CurrencyFormatter.format(1000000.0)],
+          ],
+        });
+      } else if (kind == 'payment' || kind == 'deeplink') {
+        context.go('/success', extra: {
+          'title': 'Pembayaran berhasil',
+          'subtitle': flow['description'] as String? ?? 'Pembayaran QRIS',
+          'amount': (flow['amount'] as num).toDouble(),
+          'lines': [
+            ['Jumlah', CurrencyFormatter.format((flow['amount'] as num).toDouble())],
+            ['Saldo setelah', CurrencyFormatter.format(1000000.0)],
+            ['Ref', 'DKGMOCK${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}'],
+          ],
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<PaymentBloc, PaymentState>(
       listener: (context, state) {
+        debugPrint('[PinPage] Received PaymentState: $state');
         if (state is PaymentTransferSuccess) {
+          debugPrint('[PinPage] PaymentTransferSuccess: routing to /success');
           final result = state.result;
           context.go('/success', extra: {
             'title': 'Transfer berhasil',
@@ -72,6 +92,7 @@ class _PinPageState extends State<PinPage> {
             ],
           });
         } else if (state is PaymentTopupSuccess) {
+          debugPrint('[PinPage] PaymentTopupSuccess: routing to /success');
           context.go('/success', extra: {
             'title': 'Top up berhasil',
             'subtitle': 'Saldo kamu bertambah',
@@ -82,11 +103,26 @@ class _PinPageState extends State<PinPage> {
             ],
           });
         } else if (state is PaymentInvalidOtp) {
+          debugPrint('[PinPage] PaymentInvalidOtp: OTP is invalid');
           setState(() { _busy = false; _hasError = true; _pin = ''; });
           Future.delayed(const Duration(milliseconds: 800), () {
             if (mounted) setState(() => _hasError = false);
           });
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Error PIN/OTP'),
+              content: Text(state.message),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
         } else if (state is PaymentInsufficientBalance) {
+          debugPrint('[PinPage] PaymentInsufficientBalance');
           setState(() { _busy = false; _pin = ''; });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -95,9 +131,20 @@ class _PinPageState extends State<PinPage> {
             ),
           );
         } else if (state is PaymentError) {
+          debugPrint('[PinPage] PaymentError: ${state.message}');
           setState(() => _busy = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: AppColors.red),
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Transaksi Gagal'),
+              content: Text(state.message),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
           );
         }
       },
