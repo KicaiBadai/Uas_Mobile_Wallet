@@ -305,17 +305,18 @@ class _HomePageState extends State<HomePage> {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.line2, width: 1.2),
               boxShadow: AppColors.shadowSoft,
             ),
             child: Row(
               children: [
                 const FeatureIcon(
                     icon: Icons.star_outline_rounded, tone: 'amber', size: 38, iconSize: 19),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
@@ -324,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11.5,
                             color: AppColors.slate500,
-                            fontWeight: FontWeight.w600)),
+                            fontWeight: FontWeight.w700)),
                     Text('1.250',
                         style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
@@ -337,20 +338,21 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.line2, width: 1.2),
               boxShadow: AppColors.shadowSoft,
             ),
             child: Row(
               children: [
                 const FeatureIcon(
                     icon: Icons.qr_code_rounded, tone: 'green', size: 38, iconSize: 19),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
@@ -359,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11.5,
                             color: AppColors.slate500,
-                            fontWeight: FontWeight.w600)),
+                            fontWeight: FontWeight.w700)),
                     Text('Aktif',
                         style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
