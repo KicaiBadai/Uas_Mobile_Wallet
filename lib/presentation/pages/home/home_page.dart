@@ -66,21 +66,35 @@ class _HomePageState extends State<HomePage> {
                             20, MediaQuery.of(context).padding.top + 12, 20, 94),
                         child: Row(
                           children: [
-                            AppAvatar(
-                                name: fullName,
-                                size: 44,
-                                bg: Colors.white.withValues(alpha: 0.25)),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white.withOpacity(0.25), width: 1.5),
+                              ),
+                              child: AppAvatar(
+                                  name: fullName,
+                                  size: 44,
+                                  bg: Colors.white.withOpacity(0.2)),
+                            ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Selamat siang,',
-                                      style: TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 13,
-                                        color: Colors.white70,
-                                      )),
+                                  Text(
+                                    () {
+                                      final hour = DateTime.now().hour;
+                                      if (hour < 11) return 'Selamat pagi,';
+                                      if (hour < 15) return 'Selamat siang,';
+                                      if (hour < 19) return 'Selamat sore,';
+                                      return 'Selamat malam,';
+                                    }(),
+                                    style: const TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
+                                      fontSize: 13,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
                                   Text('$firstName ',
                                       style: const TextStyle(
                                         fontFamily: 'PlusJakartaSans',
@@ -98,8 +112,9 @@ class _HomePageState extends State<HomePage> {
                                   width: 42,
                                   height: 42,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.18),
+                                    color: Colors.white.withOpacity(0.16),
                                     borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
                                   ),
                                   child: const Icon(Icons.notifications_outlined,
                                       size: 21, color: Colors.white),
