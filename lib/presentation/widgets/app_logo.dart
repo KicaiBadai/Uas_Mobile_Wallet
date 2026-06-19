@@ -12,11 +12,21 @@ class AppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     const fontFamily = 'PlusJakartaSans';
 
-    Widget icon = Image.asset(
-      'assets/images/logo-dompet.png',
+    Widget icon = Container(
       width: size,
       height: size,
-      fit: BoxFit.contain,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: AppColors.primaryGradient,
+        boxShadow: light ? null : AppColors.shadowPrimary,
+      ),
+      child: Center(
+        child: Icon(
+          Icons.account_balance_wallet_rounded,
+          size: size * 0.52,
+          color: Colors.white,
+        ),
+      ),
     );
 
     if (!withText) return icon;
@@ -47,7 +57,7 @@ class AppLogo extends StatelessWidget {
                 fontFamily: fontFamily,
                 fontSize: size * 0.205,
                 fontWeight: FontWeight.w700,
-                color: light ? Colors.white.withValues(alpha: 0.85) : AppColors.primary,
+                color: light ? Colors.white.withOpacity(0.85) : AppColors.primary,
                 letterSpacing: 1.5,
                 height: 1.05,
               ),
