@@ -219,6 +219,7 @@ class _Line extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label,
               style: TextStyle(
@@ -227,13 +228,17 @@ class _Line extends StatelessWidget {
                 fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
                 color: bold ? AppColors.ink : AppColors.slate500,
               )),
-          Text(value,
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: bold ? 16.0 : 14,
-                fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
-                color: bold ? AppColors.primary : AppColors.ink,
-              )),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(value,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: bold ? 16.0 : 14,
+                  fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
+                  color: bold ? AppColors.primary : AppColors.ink,
+                )),
+          ),
         ],
       ),
     );
