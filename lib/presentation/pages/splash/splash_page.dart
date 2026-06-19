@@ -45,7 +45,7 @@ class _SplashPageState extends State<SplashPage> {
                     height: 320,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.08),
+                      color: Colors.white.withOpacity(0.08),
                     ),
                   ),
                 ),
@@ -57,7 +57,7 @@ class _SplashPageState extends State<SplashPage> {
                     height: 220,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.07),
+                      color: Colors.white.withOpacity(0.07),
                     ),
                   ),
                 ),
@@ -67,37 +67,49 @@ class _SplashPageState extends State<SplashPage> {
                   child: Column(
                     children: [
                       const Spacer(),
-                      const AppLogo(size: 92, light: true),
-                      const SizedBox(height: 26),
+                      // Premium glassmorphic logo container
+                      Container(
+                        padding: const EdgeInsets.all(26),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.06),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.12),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: const AppLogo(size: 80, light: true),
+                      ),
+                      const SizedBox(height: 32),
                       const Text(
                         'Dompet Kampus',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
-                          fontSize: 30,
+                          fontSize: 32,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
-                          letterSpacing: -0.5,
+                          letterSpacing: -0.6,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 4),
                       const Text(
                         'GLOBAL',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: 3,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white70,
+                          letterSpacing: 6,
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      const SizedBox(height: 20),
+                      Text(
                         'Bayar, transfer, dan kelola uang kuliah\ndalam satu aplikasi yang aman.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15,
-                          color: Colors.white,
+                          color: Colors.white.withOpacity(0.85),
                           height: 1.5,
                         ),
                       ),
@@ -109,7 +121,7 @@ class _SplashPageState extends State<SplashPage> {
                             variant: AppButtonVariant.white,
                             onPressed: () => context.push('/register'),
                           ),
-                          const SizedBox(height: 11),
+                          const SizedBox(height: 12),
                           AppButton(
                             label: 'Masuk ke Akun',
                             variant: AppButtonVariant.outlineWhite,
