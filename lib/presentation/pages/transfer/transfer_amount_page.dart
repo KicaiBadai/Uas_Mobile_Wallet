@@ -283,12 +283,3 @@ extension on int {
     );
   }
 }
-
-extension on int {
-  String toLocaleString() {
-    return toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (m) => '${m[1]}.',
-    );
-  }
-}
