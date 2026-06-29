@@ -28,29 +28,20 @@ Tonton demonstrasi alur transaksi lengkap dan penjelasan integrasi sistem pada v
 
 ---
 
-Menu buat akun dan masuk akun
-<img width="437" height="1022" alt="image" src="https://github.com/user-attachments/assets/8af2847b-7910-4d47-82c6-18e34c69a0b3" />
+## 📸 Antarmuka UI & Screenshots
 
-menu buat akun 
-<img width="425" height="1015" alt="image" src="https://github.com/user-attachments/assets/b024050b-0bdb-4e45-9c44-4a1be70c02fe" />
+Untuk mempermudah pemahaman alur aplikasi, berikut adalah tangkapan layar (screenshots) dari antarmuka pengguna aplikasi Dompet Kampus Global:
 
-menu login
-<img width="431" height="1023" alt="image" src="https://github.com/user-attachments/assets/65ea42d9-c604-4dde-89b6-8e87c87ebda5" />
+### 1. Autentikasi & Verifikasi Keamanan (2FA)
+| Halaman Awal | Pendaftaran Akun | Masuk Akun (Login) | Kode OTP (2FA) |
+| :---: | :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/8af2847b-7910-4d47-82c6-18e34c69a0b3" width="200" /> | <img src="https://github.com/user-attachments/assets/b024050b-0bdb-4e45-9c44-4a1be70c02fe" width="200" /> | <img src="https://github.com/user-attachments/assets/65ea42d9-c604-4dde-89b6-8e87c87ebda5" width="200" /> | <img src="https://github.com/user-attachments/assets/6531d799-33e2-43fc-9eab-0c1b35a97047" width="200" /> |
 
-memasukan code opt 2 fa
-<img width="427" height="1022" alt="image" src="https://github.com/user-attachments/assets/6531d799-33e2-43fc-9eab-0c1b35a97047" />
+### 2. Fitur Transaksi & Profil
+| Halaman Beranda Utama | Menu Top-Up (Isi Saldo) | Riwayat Transaksi | Detail Profil Akun |
+| :---: | :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/ac9290e1-a0dc-4952-aa33-26e107ad8a7f" width="200" /> | <img src="https://github.com/user-attachments/assets/9e100fac-97e6-4e9d-bba6-7353180d178f" width="200" /> | <img src="https://github.com/user-attachments/assets/b85083cb-6651-4ad9-b870-008f1936b86b" width="200" /> | <img src="https://github.com/user-attachments/assets/cf883c64-42aa-437e-9452-ed3f12c348cc" width="200" /> |
 
-halaman awal
-<img width="427" height="1027" alt="image" src="https://github.com/user-attachments/assets/ac9290e1-a0dc-4952-aa33-26e107ad8a7f" />
-
-isi saldo 
-<img width="437" height="997" alt="image" src="https://github.com/user-attachments/assets/9e100fac-97e6-4e9d-bba6-7353180d178f" />
-
-riwayat
-<img width="431" height="1023" alt="image" src="https://github.com/user-attachments/assets/b85083cb-6651-4ad9-b870-008f1936b86b" />
-
-akun profile
-<img width="427" height="1025" alt="image" src="https://github.com/user-attachments/assets/cf883c64-42aa-437e-9452-ed3f12c348cc" />
 
 
 
