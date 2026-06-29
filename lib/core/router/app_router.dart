@@ -28,6 +28,7 @@ import '../../presentation/pages/transfer/transfer_confirm_page.dart';
 import '../../presentation/pages/transfer/transfer_page.dart';
 import '../../presentation/widgets/app_tab_bar.dart';
 import '../../presentation/pages/payment/payment_deeplink_page.dart';
+import '../theme/app_colors.dart';
 
 
 class AppRouter {
@@ -95,6 +96,7 @@ class AppRouter {
                 bottomNavigationBar: AppTabBar(
                   active: tab,
                   onTab: (t) {
+                    debugPrint('[AppRouter] onTab triggered: $t');
                     switch (t) {
                       case 'history': context.go('/history'); break;
                       case 'promo': context.go('/promo'); break;

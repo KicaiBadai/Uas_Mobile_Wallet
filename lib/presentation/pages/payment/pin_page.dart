@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_constants.dart';
+import '../../../core/services/deeplink_callback_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
-import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/payment/payment_bloc.dart';
-import '../../widgets/feature_icon.dart';
 import '../../widgets/pin_pad.dart';
 
 class PinPage extends StatefulWidget {
@@ -31,58 +29,49 @@ class _PinPageState extends State<PinPage> {
     final flow = widget.flowData;
     final kind = flow['kind'] as String? ?? '';
 
-    debugPrint('[PinPage] Simulating payment success locally for kind=$kind with PIN=$pin');
+    debugPrint('[PinPage] Processing payment for kind=$kind with PIN=$pin');
 
-    // Simulate network delay of 1.2 seconds, then redirect to success page directly
-    Future.delayed(const Duration(milliseconds: 1200), () {
-      if (!mounted) return;
-
-      if (kind == 'transfer') {
-        context.go('/success', extra: {
-          'title': 'Transfer berhasil',
-          'subtitle': flow['note'] as String? ?? 'Transfer',
-          'amount': (flow['amount'] as num).toDouble(),
-          'lines': [
-            ['Jumlah', CurrencyFormatter.format((flow['amount'] as num).toDouble())],
-            ['Saldo setelah', CurrencyFormatter.format(1000000.0)], // mock balance
-            ['Ref', 'DKGMOCK${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}'],
-          ],
-        });
-      } else if (kind == 'topup') {
-        context.go('/success', extra: {
-          'title': 'Top up berhasil',
-          'subtitle': 'Saldo kamu bertambah',
-          'amount': (flow['amount'] as num).toDouble(),
-          'lines': [
-            ['Jumlah', CurrencyFormatter.format((flow['amount'] as num).toDouble())],
-            ['Saldo sekarang', CurrencyFormatter.format(1000000.0)],
-          ],
-        });
-      } else if (kind == 'payment' || kind == 'deeplink') {
-        context.go('/success', extra: {
-          'title': 'Pembayaran berhasil',
-          'subtitle': flow['description'] as String? ?? 'Pembayaran QRIS',
-          'amount': (flow['amount'] as num).toDouble(),
-          'lines': [
-            ['Jumlah', CurrencyFormatter.format((flow['amount'] as num).toDouble())],
-            ['Saldo setelah', CurrencyFormatter.format(1000000.0)],
-            ['Ref', 'DKGMOCK${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}'],
-          ],
-        });
-      }
-    });
+    if (kind == 'transfer' || kind == 'deeplink') {
+      context.read<PaymentBloc>().add(
+        PaymentTransferRequested(
+          amount: (flow['amount'] as num).toDouble(),
+          description: flow['description'] as String? ?? (kind == 'deeplink' ? 'Pembayaran Merchant' : 'Transfer'),
+          otpCode: pin,
+          otpType: kind, // pass 'transfer' or 'deeplink' to bypass standard OTP checks on backend
+        ),
+      );
+    } else if (kind == 'topup') {
+      context.read<PaymentBloc>().add(
+        PaymentTopupRequested((flow['amount'] as num).toDouble()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final flow = widget.flowData;
+    final kind = flow['kind'] as String? ?? '';
+
     return BlocListener<PaymentBloc, PaymentState>(
       listener: (context, state) {
-        debugPrint('[PinPage] Received PaymentState: $state');
         if (state is PaymentTransferSuccess) {
-          debugPrint('[PinPage] PaymentTransferSuccess: routing to /success');
           final result = state.result;
+
+          if (kind == 'deeplink') {
+            final cb = flow['callbackUrl'] as String?;
+            final ref = flow['reference'] as String?;
+            if (cb != null && cb.isNotEmpty) {
+              debugPrint('[PinPage] Sending deep link success callback to: $cb?status=success&reference=$ref&transaction_id=TXN${result.transactionId}');
+              DeeplinkCallbackService.notifySuccess(
+                callbackUrl: cb,
+                reference: ref,
+                transactionId: result.transactionId,
+              );
+            }
+          }
+
           context.go('/success', extra: {
-            'title': 'Transfer berhasil',
+            'title': kind == 'deeplink' ? 'Pembayaran berhasil' : 'Transfer berhasil',
             'subtitle': result.description,
             'amount': result.amount,
             'lines': [
@@ -92,7 +81,6 @@ class _PinPageState extends State<PinPage> {
             ],
           });
         } else if (state is PaymentTopupSuccess) {
-          debugPrint('[PinPage] PaymentTopupSuccess: routing to /success');
           context.go('/success', extra: {
             'title': 'Top up berhasil',
             'subtitle': 'Saldo kamu bertambah',
@@ -103,26 +91,11 @@ class _PinPageState extends State<PinPage> {
             ],
           });
         } else if (state is PaymentInvalidOtp) {
-          debugPrint('[PinPage] PaymentInvalidOtp: OTP is invalid');
           setState(() { _busy = false; _hasError = true; _pin = ''; });
           Future.delayed(const Duration(milliseconds: 800), () {
             if (mounted) setState(() => _hasError = false);
           });
-          showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Error PIN/OTP'),
-              content: Text(state.message),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
         } else if (state is PaymentInsufficientBalance) {
-          debugPrint('[PinPage] PaymentInsufficientBalance');
           setState(() { _busy = false; _pin = ''; });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -131,20 +104,9 @@ class _PinPageState extends State<PinPage> {
             ),
           );
         } else if (state is PaymentError) {
-          debugPrint('[PinPage] PaymentError: ${state.message}');
           setState(() => _busy = false);
-          showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Transaksi Gagal'),
-              content: Text(state.message),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message), backgroundColor: AppColors.red),
           );
         }
       },
