@@ -1,5 +1,11 @@
 # 💳 Dompet Kampus Global - E-Wallet Application
 
+### 👤 Identitas Mahasiswa
+- **Nama:** Aditya Maula Wiratama
+- **NIM:** 1123150013
+- **Kelas:** TI SE 1
+
+
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
 [![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
 [![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
@@ -132,5 +138,4 @@ Backend berjalan menggunakan **Go (Golang)** pada port `8081`.
 ---
 
 ## 👥 Pengembang (Contributors)
-- **[Nama Anda]** - **[NIM Anda]** - Pengembangan Frontend Mobile (Flutter BLoC), Integrasi Native Deep-linking, & Penyesuaian API E-Wallet.
-- **Ketut** - Pengembangan Backend `be-emoney` (Golang, Redis, MySQL).
+- **Aditya Maula Wiratama** - **1123150013** (Kelas: TI SE 1) - Pengembangan Frontend Mobile (Flutter BLoC), Integrasi Native Deep-linking, & Penyesuaian API E-Wallet.
